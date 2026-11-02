@@ -52,12 +52,19 @@ Consider the following simple example:
 
 **Question:** Draw the full recursion tree for `MaxValue(3)` using the example above. Label the remaining capacity at each node and indicate which item is chosen along each branch.
 
+![alt text](IMG_5024.jpeg)
 
 ## Part 4: Recurrence Relation
 
 **Question:** Derive a mathematical recurrence relation for $OPT(W)$, the maximum value you can pack into a knapsack of capacity $W$, based on the naive recursive algorithm. Be sure to state your base case(s) and explain how you arrived at your formula.
 
-*Your Answer:*
+
+$OPT(W)= \begin{cases}
+0 && \text{if}\ W=0 \\
+\text{max}_{1\leq i\leq n}\{v_i+OPT(W-w_i)\} && \text{if}\ W>0
+\end{cases}$
+
+We have $n$ items with weights $w_1,w_2,..w_n$ and values $v_1,v_2,...v_n$. From our naive algorithm, if W=0, then the max value returned is automatically zero. Otherwise, we carry out a recursive operation going down each branch of possible options, and the subtracting the weights of each object $i$ along the way. Then we find the maximum possible value produced by all possible branches. As we got down each branch, we do not remove the possibility of choosing any item, unless that item's weight exceeds that of the remaining weight.
 
 
 ## Part 5: Bottom-Up Dynamic Programming
@@ -68,19 +75,21 @@ Instead of using the slow recursive approach, we can build a table bottom-up.
 
 | Capacity ($W$) | Optimal Value ($OPT$) | Item Chosen |
 |:---:|:---|:---|
-| **0** | | |
-| **1** | | |
-| **2** | | |
-| **3** | | |
-| **4** | | |
-| **5** | | |
-| **6** | | |
+| **0** |0 |none |
+| **1** |3 |Item 3 |
+| **2** |6 |Item 3 x2 |
+| **3** |9 |Item 3 x3 |
+| **4** |12 |Item 3 x4 |
+| **5** |15 |Item 3 x5 |
+| **6** |18 |Item 3 x6 |
 
 *Explain how you calculated the row for $W=6$*
+
+We chose item 3 along each branch of our tree. Since item 3 has weight 1, we can chose it 6 times if W=6. Therefore, the optimal value is 6x3=18
 
 
 ## Part 6: Traceback
 
 **Question:** Using the "Item Chosen" column from the table you completed in Part 5, trace back to find the exact quantities of each item to pack that maximize the value. What is the final optimal packing configuration for $W=6$ and the maximum value?
 
-*Your Answer:*
+For every weight W, we chose item 3 as many times as possible. Item 3 has the greatest ratio of value to weight among all object, with Ratio=3. Additionally, Item 3's weight is 1, which divides all possible values of W. Therefore, if no matter what the remaining weight is, as long as its greater than 0, we can always choose 3. Since item 3 always has the best value to weight ratio, and we can always chose it if remaining weight>0, we should always chose it when given the opportunity. 
